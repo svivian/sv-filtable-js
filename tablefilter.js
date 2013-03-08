@@ -1,6 +1,6 @@
 
 (function ($) {
-	$.fn.tablefilter = function (settings) {
+	$.fn.filtable = function (settings) {
 		settings = $.extend({
 			filters: []
 		}, settings);
@@ -52,6 +52,8 @@
 					// replace old tbody with this one
 					$oldTbody.replaceWith($newTbody);
 				});
+
+				$table.trigger('aftertablefilter');
 			}, 10);
 		});
 	};
