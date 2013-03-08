@@ -13,7 +13,7 @@ A filter is an object containing `column` and `value` properties. For example, t
 Filtable accepts an array of such filters in the "filters" parameter. For example this filters the table to rows where the first cell contains "hello" *and* the third cell contains "world":
 
 	var myfilters = [{ column: 0, value: 'hello' }, { column: 2, value: 'world' }];
-	$('#mytable').tablefilter({ 'filters': myfilters });
+	$('#mytable').filtable({ 'filters': myfilters });
 
 ## Zebra-striping
 
@@ -52,4 +52,4 @@ Filtable supports custom events. Currently there are two: `beforetablefilter` an
 	$table.on('aftertablefilter', function (event) {
 		$('#msg').text('Done filtering!')
 	});
-	$table.tablefilter({ filters: myfilters });
+	$table.filtable({ filters: myfilters });
