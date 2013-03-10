@@ -5,7 +5,7 @@
 			filters: []
 		}, settings);
 
-		var zebra = ['even','odd'];
+		var zebra = ['odd','even'];
 
 		return this.each(function () {
 			var $table = $(this);
@@ -37,14 +37,13 @@
 								showTR = false;
 								break;
 							}
-							else {
-								$tr.addClass( zebra[stripe] );
-								stripe = 1 - stripe;
-							}
 						}
 
-						if ( showTR )
+						if ( showTR ) {
 							$tr.removeClass('hidden');
+							$tr.addClass( zebra[stripe] );
+							stripe = 1 - stripe;
+						}
 						else
 							$tr.addClass('hidden');
 					});
