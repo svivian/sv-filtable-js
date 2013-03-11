@@ -14,7 +14,6 @@
 			// Run filter asynchronously to force browser redraw on beforetablefilter and avoid locking the browser
 			setTimeout(function() {
 				var stripe = 0;
-				// currently only support one tbody
 				var $oldTbody = $table.find('> tbody');
 
 				$oldTbody.each(function(){
@@ -24,8 +23,6 @@
 					$newTbody.find('> tr').each(function(){
 						var $tr = $(this);
 						var showTR = true;
-						// reset zebra stripes
-						$tr.removeClass( zebra.join(' ') );
 
 						for ( var i = 0, len = settings.filters.length; i < len; i++ )
 						{
@@ -39,13 +36,16 @@
 							}
 						}
 
+						// reset zebra stripes
+						$tr.removeClass( zebra.join(' ') );
 						if ( showTR ) {
 							$tr.removeClass('hidden');
 							$tr.addClass( zebra[stripe] );
 							stripe = 1 - stripe;
 						}
-						else
+						else {
 							$tr.addClass('hidden');
+						}
 					});
 
 					// replace old tbody with this one
