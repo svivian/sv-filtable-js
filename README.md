@@ -4,6 +4,8 @@ Filtable - a jQuery table filtering plugin
 
 Filtable is a simple jQuery plugin to filter a table. Give it a set of filters detailing the search terms and columns to search, and it will reduce the table to only the rows containing those terms.
 
+Current version: 0.3
+
 ## Filters
 
 A filter is an object containing `column` and `value` properties. For example, this represents a search of the first column for the string "test":

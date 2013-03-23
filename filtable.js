@@ -56,10 +56,10 @@
 					// Callback function that does the processing
 					for ( var i = 0, len = settings.filters.length; i < len; i++ ) {
 						var col = settings.filters[i].column;
-						var val = settings.filters[i].value;
+						var val = settings.filters[i].value.toLowerCase();
 
 						var $td = $tr.find('td').eq(col);
-						if ( $td.text().indexOf(val) < 0 ) {
+						if ( $td.text().toLowerCase().indexOf(val) < 0 ) {
 							return false;
 						}
 					}
