@@ -2,6 +2,7 @@
 body {
 	margin: 20px;
 	font-family: "Ubuntu", "Trebuchet MS", sans-serif;
+	font-size: 14px;
 }
 table {
 	border-collapse: collapse;
@@ -13,9 +14,7 @@ th, td {
 }
 th {
 	background-color: #eee;
-}
-th[data-sort]{
-	cursor:pointer;
+	padding: 10px;
 }
 
 /* random additional styles for a more real-world situation */
@@ -26,6 +25,27 @@ td.email {
 	color: #666;
 	text-decoration: underline;
 }
+
+/* form styles */
+input, select {
+	font: inherit;
+	margin: 0;
+	padding: 4px;
+}
+.input-text {
+	/* default browser widths are too small */
+	min-width: 250px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+select {
+	min-width: 150px;
+}
+label {
+	margin-right: 4px;
+}
+
+
 
 /* Filtable styles */
 tr.hidden {
