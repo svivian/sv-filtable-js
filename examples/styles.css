@@ -1,0 +1,49 @@
+
+body {
+	margin: 20px;
+	font-family: "Ubuntu", "Trebuchet MS", sans-serif;
+}
+table {
+	border-collapse: collapse;
+	margin: 1em 0;
+}
+th, td {
+	padding: 5px 10px;
+	border: 1px solid #999;
+}
+th {
+	background-color: #eee;
+}
+th[data-sort]{
+	cursor:pointer;
+}
+
+/* random additional styles for a more real-world situation */
+td.name {
+	font-weight: bold;
+}
+td.email {
+	color: #666;
+	text-decoration: underline;
+}
+
+/* Filtable styles */
+tr.hidden {
+display: none;
+}
+	tr.odd > td,
+	tr:nth-child(odd) > td {
+	background-color: #ffffff;
+}
+	tr.even > td,
+	tr:nth-child(even) > td {
+	background-color: #f9f9f7;
+}
+
+
+.large-table {
+	width: 100%;
+}
+.large-table td {
+	font-size: 12px;
+}

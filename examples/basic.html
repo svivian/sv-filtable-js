@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stupid jQuery table sort (large table example)</title>
+<link rel="stylesheet" href="styles.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="../filtable.js?dev"></script>
+<script>
+$(function(){
+	var $table = $('table');
+	$filterInput = $('#filter-country');
+
+	$filterInput.on('keyup', function () {
+		var filter = [{ column: 3, value: $filterInput.val() }];
+		$table.filtable({ 'filters': filter });
+	});
+});
+</script>
+</head>
+
+<body>
+
+<h1>jQuery Filtable - basic example</h1>
+
+<p>Simple table for testing.</p>
+
+
+<div class="table-filters">
+	<label for="filter-country">Filter:</label>
+	<input type="text" class="input-text" id="filter-country">
+</div>
+
+
+<!-- data taken from generatedata.com -->
+<table>
+<thead>
+	<tr>
+		<th data-sort="string">First name</th>
+		<th data-sort="string">Last name</th>
+		<th data-sort="string">City</th>
+		<th data-sort="string">Country</th>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<td>Shoshana</td>
+		<td class="name">Wooten</td>
+		<td>Valdosta</td>
+		<td>United Kingdom</td>
+	</tr>
+	<tr>
+		<td>Stewart</td>
+		<td class="name">Dillard</td>
+		<td>South Portland</td>
+		<td>Italy</td>
+	</tr>
+	<tr>
+		<td>Tana</td>
+		<td class="name">Villarreal</td>
+		<td>Waltham</td>
+		<td>Solomon Islands</td>
+	</tr>
+	<tr>
+		<td>Wendy</td>
+		<td class="name">Greer</td>
+		<td>Bellflower</td>
+		<td>Mauritania</td>
+	</tr>
+	<tr>
+		<td>Kenneth</td>
+		<td class="name">Livingston</td>
+		<td>Anaheim</td>
+		<td>Honduras</td>
+	</tr>
+	<tr>
+		<td>Holly</td>
+		<td class="name">Strong</td>
+		<td>Placentia</td>
+		<td>Greenland</td>
+	</tr>
+	<tr>
+		<td>Lynn</td>
+		<td class="name">Cooley</td>
+		<td>Temecula</td>
+		<td>Papua New Guinea</td>
+	</tr>
+	<tr>
+		<td>Autumn</td>
+		<td class="name">Barry</td>
+		<td>Malden</td>
+		<td>Serbia and Montenegro</td>
+	</tr>
+	<tr>
+		<td>Hadassah</td>
+		<td class="name">Berry</td>
+		<td>Ketchikan</td>
+		<td>Egypt</td>
+	</tr>
+	<tr>
+		<td>Hector</td>
+		<td class="name">Burns</td>
+		<td>Kokomo</td>
+		<td>Monaco</td>
+	</tr>
+	<tr>
+		<td>Eagan</td>
+		<td class="name">Carr</td>
+		<td>Jeannette</td>
+		<td>Slovakia</td>
+	</tr>
+	<tr>
+		<td>Charissa</td>
+		<td class="name">Barker</td>
+		<td>Meadville</td>
+		<td>New Zealand</td>
+	</tr>
+	<tr>
+		<td>Abigail</td>
+		<td class="name">Holman</td>
+		<td>Dubuque</td>
+		<td>Kiribati</td>
+	</tr>
+	<tr>
+		<td>Caesar</td>
+		<td class="name">Carver</td>
+		<td>Jordan Valley</td>
+		<td>Mexico</td>
+	</tr>
+	<tr>
+		<td>Barbara</td>
+		<td class="name">Shields</td>
+		<td>Saint Joseph</td>
+		<td>Germany</td>
+	</tr>
+	<tr>
+		<td>Rose</td>
+		<td class="name">Pace</td>
+		<td>Moraga</td>
+		<td>Ecuador</td>
+	</tr>
+	<tr>
+		<td>Nero</td>
+		<td class="name">William</td>
+		<td>Hutchinson</td>
+		<td>Serbia and Montenegro</td>
+	</tr>
+	<tr>
+		<td>Thor</td>
+		<td class="name">Kelly</td>
+		<td>Jeffersonville</td>
+		<td>Liberia</td>
+	</tr>
+	<tr>
+		<td>Edward</td>
+		<td class="name">Barron</td>
+		<td>Mandan</td>
+		<td>Paraguay</td>
+	</tr>
+	<tr>
+		<td>Mohammad</td>
+		<td class="name">Mcfadden</td>
+		<td>Cicero</td>
+		<td>Bolivia</td>
+	</tr>
+</tbody>
+</table>
+
+</body>
+</html>
