@@ -5,21 +5,21 @@
 	var zebra = ['odd','even'];
 
 	var methods = {
+
 		// [public] Default setup, taking a source jQuery object for automatic filtering
 		init: function (options) {
-			// console.log(arguments);
-
 			options = $.extend({
 				controls: null,
 				handleSort: true
 			}, options);
 
 			var $table = $(this);
+			// TODO: grab all possible elements and save in array
 
 			$('input[type="text"]', options.controls).on('keyup', function () {
-				var cols = $(this).data('filter');
+				var cols = $(this).data('filter').toString().split(',');
 				var val = $(this).val();
-				var filter = [{ column: cols, value: val }];
+				var filter = [{ columns: cols, value: val }];
 
 				var args = [{'filters': filter}];
 				methods.filter.apply( $table, args );
@@ -32,8 +32,6 @@
 				filters: [],
 				handleSort: true
 			}, options);
-
-			// console.log(options.filters.columns);
 
 			return this.each(function () {
 				var $table = $(this);
@@ -52,14 +50,19 @@
 				setTimeout(function () {
 					methods.handleRowsThenStripe($table, function ($tr) {
 						// Callback function that does the processing
-						for ( var i = 0, len = options.filters.length; i < len; i++ ) {
-							var col = options.filters[i].column;
+						for ( var i = 0, numFilters = options.filters.length; i < numFilters; i++ ) {
+							var cols = options.filters[i].columns;
 							var val = options.filters[i].value.toLowerCase();
 
-							var $td = $tr.find('td').eq(col);
-							if ( $td.text().toLowerCase().indexOf(val) < 0 ) {
-								return false;
+							var showCol = false;
+							for ( var j = 0, numCols = cols.length; j < numCols; j++ ) {
+								var $td = $tr.find('td').eq(cols[j]);
+								if ( $td.text().toLowerCase().indexOf(val) >= 0 ) {
+									showCol = true;
+								}
 							}
+							if ( !showCol )
+								return false;
 						}
 
 						return true;
