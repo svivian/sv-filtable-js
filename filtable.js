@@ -1,15 +1,77 @@
 
 (function ($) {
-	$.fn.filtable = function (settings) {
-		settings = $.extend({
-			filters: [],
-			handleSort: true
-		}, settings);
 
-		var zebra = ['odd','even'];
+	// zebra striping classes
+	var zebra = ['odd','even'];
 
-		// Loops through the table rows
-		var handleRowsThenStripe = function ($table, callback) {
+	var methods = {
+		// [public] Default setup, taking a source jQuery object for automatic filtering
+		init: function (options) {
+			// console.log(arguments);
+
+			options = $.extend({
+				source: null,
+				handleSort: true
+			}, options);
+
+			$('input[type="text"]', options.source).on('keyup', function () {
+				var filter = [{ column: 3, value: $(this).val() }];
+				var param = { 'filters': filter };
+
+				methods.filter.apply( this, [param] );
+			});
+		},
+
+		// [public] Do the actual filtering
+		filter: function (options) {
+			options = $.extend({
+				filters: [],
+				handleSort: true
+			}, options);
+
+			console.log(options.filters);
+			console.log(zebra);
+
+			return this.each(function () {
+				var $table = $(this);
+				$table.trigger('beforetablefilter');
+
+				// Re-stripe rows when the table gets sorted by Stupid-Table-Plugin
+				if ( options.handleSort ) {
+					$table.on('aftertablesort', function (event, data) {
+						methods.handleRowsThenStripe($table, function ($tr) {
+							return !$tr.hasClass('hidden');
+						});
+					});
+				}
+
+				// Run filter asynchronously to force browser redraw on beforetablefilter and avoid locking the browser
+				setTimeout(function () {
+					methods.handleRowsThenStripe($table, function ($tr) {
+						// Callback function that does the processing
+						for ( var i = 0, len = options.filters.length; i < len; i++ ) {
+							var col = options.filters[i].column;
+							var val = options.filters[i].value.toLowerCase();
+
+							var $td = $tr.find('td').eq(col);
+							if ( $td.text().toLowerCase().indexOf(val) < 0 ) {
+								return false;
+							}
+						}
+
+						return true;
+					});
+
+					$table.trigger('aftertablefilter');
+				}, 10);
+			});
+
+		},
+
+
+
+		// [private] Loops through table rows and runs callback to decide whether row should be shown
+		handleRowsThenStripe: function ($table, callback) {
 			var stripe = 0;
 			var $oldTbody = $table.find('> tbody');
 
@@ -35,40 +97,19 @@
 				// Replace old tbody with the modified copy
 				$oldTbody.replaceWith($newTbody);
 			});
-		};
+		}
+	}
 
-		return this.each(function () {
-			var $table = $(this);
-			$table.trigger('beforetablefilter');
+	$.fn.filtable = function (method) {
 
-			// Re-stripe rows when the table gets sorted by Stupid-Table-Plugin
-			if ( settings.handleSort ) {
-				$table.on('aftertablesort', function (event, data) {
-					handleRowsThenStripe($table, function ($tr) {
-						return !$tr.hasClass('hidden');
-					});
-				});
-			}
-
-			// Run filter asynchronously to force browser redraw on beforetablefilter and avoid locking the browser
-			setTimeout(function () {
-				handleRowsThenStripe($table, function ($tr) {
-					// Callback function that does the processing
-					for ( var i = 0, len = settings.filters.length; i < len; i++ ) {
-						var col = settings.filters[i].column;
-						var val = settings.filters[i].value.toLowerCase();
-
-						var $td = $tr.find('td').eq(col);
-						if ( $td.text().toLowerCase().indexOf(val) < 0 ) {
-							return false;
-						}
-					}
-
-					return true;
-				});
-
-				$table.trigger('aftertablefilter');
-			}, 10);
-		});
+		if ( method === 'filter' ) {
+			return methods.filter.apply( this, Array.prototype.slice.call(arguments, 1) );
+		}
+		else if ( typeof method === 'object' || ! method ) {
+			return methods.init.apply( this, arguments );
+		}
+		else {
+			$.error('Unknown method `' + method + '` on jQuery.filtable');
+		}
 	};
 })(jQuery);

@@ -9,12 +9,16 @@
 <script>
 $(function(){
 	var $table = $('table');
-	$filterInput = $('#filter-country');
+	$filterCountry = $('#filter-country');
 
-	$filterInput.on('keyup', function () {
-		var filter = [{ column: 3, value: $filterInput.val() }];
-		$table.filtable({ 'filters': filter });
+	$filterCountry.on('keyup', function () {
+		var filter = [{ column: 3, value: $filterCountry.val() }];
+		$table.filtable( 'filter', { 'filters': filter });
 	});
+
+	// $('#data').filtable({ controls: $('.table-filters') });
+
+	// $('#data').filtable( 'filter', { filters: [{ column: 3, value: $filterCountry.val() }] });
 });
 </script>
 </head>
@@ -27,13 +31,15 @@ $(function(){
 
 
 <div class="table-filters">
-	<label for="filter-country">Filter:</label>
-	<input type="text" class="input-text" id="filter-country">
+	<label for="filter-country">Name:</label>
+	<input type="text" class="input-text" id="filter-name" data-filter="0,1">
+	<label for="filter-country">Country:</label>
+	<input type="text" class="input-text" id="filter-country" data-filter="3">
 </div>
 
 
 <!-- data taken from generatedata.com -->
-<table>
+<table id="data">
 <thead>
 	<tr>
 		<th>First name</th>

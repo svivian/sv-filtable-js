@@ -33,8 +33,7 @@ input, select {
 	padding: 4px;
 }
 .input-text {
-	/* default browser widths are too small */
-	min-width: 250px;
+	min-width: 150px;
 	background-color: #fff;
 	border: 1px solid #ccc;
 }
@@ -42,7 +41,7 @@ select {
 	min-width: 150px;
 }
 label {
-	margin-right: 4px;
+	margin: 0 4px 0 8px;
 }
 
 
