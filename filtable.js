@@ -10,15 +10,19 @@
 			// console.log(arguments);
 
 			options = $.extend({
-				source: null,
+				controls: null,
 				handleSort: true
 			}, options);
 
-			$('input[type="text"]', options.source).on('keyup', function () {
-				var filter = [{ column: 3, value: $(this).val() }];
-				var param = { 'filters': filter };
+			var $table = $(this);
 
-				methods.filter.apply( this, [param] );
+			$('input[type="text"]', options.controls).on('keyup', function () {
+				var cols = $(this).data('filter');
+				var val = $(this).val();
+				var filter = [{ column: cols, value: val }];
+
+				var args = [{'filters': filter}];
+				methods.filter.apply( $table, args );
 			});
 		},
 
@@ -29,8 +33,7 @@
 				handleSort: true
 			}, options);
 
-			console.log(options.filters);
-			console.log(zebra);
+			// console.log(options.filters.columns);
 
 			return this.each(function () {
 				var $table = $(this);

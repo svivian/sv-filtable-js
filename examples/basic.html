@@ -8,17 +8,15 @@
 <script src="../filtable.js?dev"></script>
 <script>
 $(function(){
-	var $table = $('table');
+	var $table = $('#data');
 	$filterCountry = $('#filter-country');
 
-	$filterCountry.on('keyup', function () {
-		var filter = [{ column: 3, value: $filterCountry.val() }];
-		$table.filtable( 'filter', { 'filters': filter });
-	});
+	// $filterCountry.on('keyup', function () {
+	// 	var filter = [{ columns: 3, value: $filterCountry.val() }];
+	// 	$table.filtable( 'filter', { 'filters': filter });
+	// });
 
-	// $('#data').filtable({ controls: $('.table-filters') });
-
-	// $('#data').filtable( 'filter', { filters: [{ column: 3, value: $filterCountry.val() }] });
+	$table.filtable({ controls: $('.table-filters') });
 });
 </script>
 </head>
@@ -31,8 +29,6 @@ $(function(){
 
 
 <div class="table-filters">
-	<label for="filter-country">Name:</label>
-	<input type="text" class="input-text" id="filter-name" data-filter="0,1">
 	<label for="filter-country">Country:</label>
 	<input type="text" class="input-text" id="filter-country" data-filter="3">
 </div>
