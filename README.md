@@ -2,20 +2,79 @@
 Filtable - a jQuery table filtering plugin
 =================================================
 
-Filtable is a simple jQuery plugin to filter a table. Give it a set of filters detailing the search terms and columns to search, and it will reduce the table to only the rows containing those terms.
+Filtable is a simple jQuery plugin to filter a table. Give it a set of input fields and it will automatically filter when the user interacts with those inputs (e.g. types in a text field). Alternatively, use the explicit filter method to filter whenever you like!
 
-Current version: 0.3
+Current version: 0.9
 
-## Filters
 
-A filter is an object containing `column` and `value` properties. For example, this represents a search of the first column for the string "test":
+## Auto-filter mode
+
+The main mode of Filtable is automatic filtering of the table. Simply pass in the parent of the form fields (as a jQuery element), and Filtable will bind events to those inputs and filter the table whenever text is typed or options selected. Here's a quick step-by-step guide:
+
+1. Start with a standard HTML data table:
+
+		<table id="mytable">
+		<thead>
+			<tr>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>City</th>
+				<th>Country</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Homer</td>
+				<td>Simpson</td>
+				<td>Springfield</td>
+				<td>USA</td>
+			</tr>
+			<!-- ...and so on -->
+		</tbody>
+		</table>
+
+2. Add your filter, e.g. a basic text input. Here we put it in a wrapper div:
+
+		<div id="table-filters">
+			<label for="filter-country">Country:</label>
+			<input type="text" id="filter-country" data-filter-col="3">
+		</div>
+
+	The `data-filter-col` attribute states which column will get filtered. The column is zero-indexed, i.e. the first column is `0` and the fourth is `3`. Multiple columns can be specified by delimiting with commas e.g. `0,1` to match either of the first two columns.
+
+3. Include jQuery and Filtable:
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="filtable.js"></script>
+
+4. Call Filtable on the table and pass the wrapper div as the `controlPanel` parameter:
+
+		$('#mytable').filtable({ controlPanel: $('#table-filters') });
+
+Done!
+
+
+## Explicit filtering mode
+
+Filtable allows you to explicitly filter a table whenever you like. The automatic filtering should be fine in most cases (and it's easier), but this mode allows more control where necessary. Just call Filtable with the string `'filter'` as the first parameter, then specify an array of filters in the options parameter.
+
+A filter is an object containing `columns` and `value` properties. For example, this represents a search of the first column for the string "test":
 
 	{ column: 0, value: 'test' }
 
-Filtable accepts an array of such filters in the "filters" parameter. For example this filters the table to rows where the first cell contains "hello" *and* the third cell contains "world":
+Here's the equivalent of the above auto-filter:
 
-	var myfilters = [{ column: 0, value: 'hello' }, { column: 2, value: 'world' }];
-	$('#mytable').filtable({ 'filters': myfilters });
+	$('#filter-country').on('keyup', function () {
+		var search = $(this).val();
+		var filter = {columns: 3, value: search};
+		$('#mytable').filtable('filter', {filters: [filter]});
+	});
+
+Here is a more complex example. We have a "name" input that filters on the first or last name, plus our "country" filter. This filters the table to rows where the name contains "simp" *and* the country contains "united":
+
+	var myfilters = [{ columns: '0,1', value: 'simp' }, { column: 3, value: 'united' }];
+	$('#mytable').filtable('filter', {filters: myfilters});
+
 
 ## Zebra-striping
 
@@ -43,9 +102,10 @@ Here's some example CSS, for a table with class `data-table`. The `nth-child` ru
 		display: none;
 	}
 
+
 ## Events
 
-Filtable supports custom events. Currently there are two: `beforetablefilter` and `aftertablefilter`, which are called respectively (can you guess?) before the table filtering begins and after filtering is finished. This allows you to for example display a message like "Processing..." while the filtering is occurring.
+Filtable supports custom events. Currently there are two: `beforetablefilter` and `aftertablefilter`, which are called respectively (can you guess?) *before* the table filtering begins and *after* filtering is finished. This allows you to, for example, display a message like "Processing..." while the filtering is occurring.
 
 	var $table = $('#mytable');
 	$table.on('beforetablefilter', function (event) {
