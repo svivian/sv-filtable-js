@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Stupid jQuery table sort (large table example)</title>
+<title>jQuery Filtable - large table example</title>
 <link rel="stylesheet" href="styles.css">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../filtable.js?dev"></script>
 <script>
 $(function(){
-
+	// Basic Filtable usage - pass in a div with the filters and the plugin will handle it
+	$('#data').filtable({ controls: $('.table-filters') });
 });
 </script>
 </head>
@@ -19,8 +20,13 @@ $(function(){
 
 <p>This is a large table of over 500 rows for speed testing.</p>
 
+<div class="table-filters">
+	<label for="filter-country">Country:</label>
+	<input type="text" class="input-text" id="filter-country" data-filter="3">
+</div>
+
 <!-- data taken from generatedata.com -->
-<table class="large-table">
+<table id="data" class="large-table">
 <thead>
 	<tr>
 		<th>First name</th>

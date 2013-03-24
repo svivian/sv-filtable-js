@@ -48,16 +48,21 @@ label {
 
 /* Filtable styles */
 tr.hidden {
-display: none;
+	display: none;
 }
-	tr.odd > td,
-	tr:nth-child(odd) > td {
+tr:nth-child(odd) > td {
 	background-color: #ffffff;
 }
-	tr.even > td,
-	tr:nth-child(even) > td {
+tr:nth-child(even) > td {
 	background-color: #f9f9f7;
 }
+tr.odd > td {
+	background-color: #ffffff;
+}
+tr.even > td {
+	background-color: #f9f9f7;
+}
+
 
 
 .large-table {

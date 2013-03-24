@@ -1,22 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Stupid jQuery table sort (large table example)</title>
+<title>jQuery Filtable - basic example</title>
 <link rel="stylesheet" href="styles.css">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="../filtable.js?dev"></script>
 <script>
 $(function(){
-	var $table = $('#data');
-	$filterCountry = $('#filter-country');
-
-	// $filterCountry.on('keyup', function () {
-	// 	var filter = [{ columns: 3, value: $filterCountry.val() }];
-	// 	$table.filtable( 'filter', { 'filters': filter });
-	// });
-
-	$table.filtable({ controls: $('.table-filters') });
+	// Basic Filtable usage - pass in a div with the filters and the plugin will handle it
+	$('#data').filtable({ controls: $('.table-filters') });
 });
 </script>
 </head>
@@ -29,6 +22,8 @@ $(function(){
 
 
 <div class="table-filters">
+	<label for="filter-country">Name:</label>
+	<input type="text" class="input-text" id="filter-name" data-filter="0,1">
 	<label for="filter-country">Country:</label>
 	<input type="text" class="input-text" id="filter-country" data-filter="3">
 </div>
