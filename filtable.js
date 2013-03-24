@@ -3,27 +3,40 @@
 
 	// zebra striping classes
 	var zebra = ['odd','even'];
+	// list of inputs to keep track of
+	var controls = [];
+	// control types with events
+	var controlEvents = {
+		'text':     { selector: 'input[type="text"]',     event: 'keyup' },
+		'select':   { selector: 'select',                 event: 'change' },
+		'checkbox': { selector: 'input[type="checkbox"]', event: 'click' }
+	};
 
 	var methods = {
 
 		// [public] Default setup, taking a source jQuery object for automatic filtering
 		init: function (options) {
 			options = $.extend({
-				controls: null,
+				controlPanel: null,
 				handleSort: true
 			}, options);
 
 			var $table = $(this);
-			// TODO: grab all possible elements and save in array
 
-			$('input[type="text"]', options.controls).on('keyup', function () {
-				var cols = $(this).data('filter').toString().split(',');
-				var val = $(this).val();
-				var filter = [{ columns: cols, value: val }];
-
-				var args = [{'filters': filter}];
-				methods.filter.apply( $table, args );
+			return this.each(function () {
+				for ( var i in controlEvents ) {
+					// select an input type
+					$(controlEvents[i].selector, options.controlPanel).each(function () {
+						$ctrl = $(this);
+						controls.push($ctrl);
+						// attach specific event to this input
+						$ctrl.on(controlEvents[i].event, function () {
+							methods.createAndRunFilters($table);
+						});
+					});
+				}
 			});
+
 		},
 
 		// [public] Do the actual filtering
@@ -103,11 +116,26 @@
 				// Replace old tbody with the modified copy
 				$oldTbody.replaceWith($newTbody);
 			});
+		},
+
+		// [private] Generate filter data structure and run filtering
+		createAndRunFilters: function ($table) {
+			var filters = [];
+
+			for ( var i = 0, len = controls.length; i < len; i++ ) {
+				var $ctrl = controls[i];
+				var cols = $ctrl.data('filter').toString().split(',');
+				var val = $ctrl.val();
+
+				filters.push( {'columns': cols, 'value': val} );
+			}
+
+			var args = [{'filters': filters}];
+			methods.filter.apply( $table, args );
 		}
 	}
 
 	$.fn.filtable = function (method) {
-
 		if ( method === 'filter' ) {
 			return methods.filter.apply( this, Array.prototype.slice.call(arguments, 1) );
 		}

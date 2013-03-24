@@ -9,7 +9,7 @@
 <script>
 $(function(){
 	// Basic Filtable usage - pass in a div with the filters and the plugin will handle it
-	$('#data').filtable({ controls: $('.table-filters') });
+	$('#data').filtable({ controlPanel: $('.table-filters') });
 });
 </script>
 </head>
@@ -24,6 +24,13 @@ $(function(){
 <div class="table-filters">
 	<label for="filter-country">Name:</label>
 	<input type="text" class="input-text" id="filter-name" data-filter="0,1">
+	<label for="filter-city">City:</label>
+	<select id="filter-city" data-filter="2" style="min-width:60px">
+		<option value="">- All -</option>
+		<option value="j">J</option>
+		<option value="k">K</option>
+		<option value="ll">LL</option>
+	</select>
 	<label for="filter-country">Country:</label>
 	<input type="text" class="input-text" id="filter-country" data-filter="3">
 </div>
