@@ -23,16 +23,22 @@ $(function(){
 
 <div class="table-filters">
 	<label for="filter-country">Name:</label>
-	<input type="text" class="input-text" id="filter-name" data-filter="0,1">
+	<input type="text" class="input-text" id="filter-name" data-filter-col="0,1">
+
 	<label for="filter-city">City:</label>
-	<select id="filter-city" data-filter="2" style="min-width:60px">
+	<select id="filter-city" data-filter-col="2" style="min-width:60px">
 		<option value="">- All -</option>
 		<option value="j">J</option>
 		<option value="k">K</option>
 		<option value="ll">LL</option>
 	</select>
+
 	<label for="filter-country">Country:</label>
-	<input type="text" class="input-text" id="filter-country" data-filter="3">
+	<input type="text" class="input-text" id="filter-country" data-filter-col="3">
+
+	<label for="filter-tick">
+		<input type="checkbox" id="filter-tick" data-filter-col="0,1,2,3" data-filter-val="B"> B</label>
+
 </div>
 
 

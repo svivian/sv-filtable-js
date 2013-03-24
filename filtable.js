@@ -124,8 +124,16 @@
 
 			for ( var i = 0, len = controls.length; i < len; i++ ) {
 				var $ctrl = controls[i];
-				var cols = $ctrl.data('filter').toString().split(',');
-				var val = $ctrl.val();
+				var cols = $ctrl.data('filter-col').toString().split(',');
+				var val = "";
+
+				var isCheckbox = controls[i].is( controlEvents.checkbox.selector );
+				if ( isCheckbox ) {
+					if ( controls[i].is(':checked') )
+						val = $ctrl.data('filter-val');
+				}
+				else
+					val = $ctrl.val();
 
 				filters.push( {'columns': cols, 'value': val} );
 			}
