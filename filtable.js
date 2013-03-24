@@ -124,7 +124,12 @@
 
 			for ( var i = 0, len = controls.length; i < len; i++ ) {
 				var $ctrl = controls[i];
-				var cols = $ctrl.data('filter-col').toString().split(',');
+				// quit if no `data-filter-col` attribute
+				var coldata = $ctrl.data('filter-col');
+				if ( !coldata )
+					return;
+
+				var cols = coldata.toString().split(',');
 				var val = "";
 
 				var isCheckbox = controls[i].is( controlEvents.checkbox.selector );
