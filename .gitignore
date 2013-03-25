@@ -1,7 +1,3 @@
-# PokemonDb-specific
-web/application/cache
-web/static/tmp
-
 # Numerous always-ignore extensions
 *.bak
 *.diff
