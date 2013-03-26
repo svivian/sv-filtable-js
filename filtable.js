@@ -127,7 +127,7 @@
 				// quit if no `data-filter-col` attribute
 				var coldata = $ctrl.data('filter-col');
 				if ( !coldata )
-					return;
+					continue;
 
 				var cols = coldata.toString().split(',');
 				var val = "";
