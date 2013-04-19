@@ -65,7 +65,7 @@
 						// Callback function that does the processing
 						for ( var i = 0, numFilters = options.filters.length; i < numFilters; i++ ) {
 							var cols = options.filters[i].columns;
-							var val = options.filters[i].value.toLowerCase();
+							var val = options.filters[i].value.toString().toLowerCase();
 
 							var showCol = false;
 							for ( var j = 0, numCols = cols.length; j < numCols; j++ ) {
