@@ -126,7 +126,7 @@
 				var $ctrl = controls[i];
 				// quit if no `data-filter-col` attribute
 				var coldata = $ctrl.data('filter-col');
-				if ( !coldata )
+				if ( coldata === undefined )
 					continue;
 
 				var cols = coldata.toString().split(',');
