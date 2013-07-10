@@ -27,7 +27,7 @@
 				for ( var i in controlEvents ) {
 					// select an input type
 					$(controlEvents[i].selector, options.controlPanel).each(function () {
-						$ctrl = $(this);
+						var $ctrl = $(this);
 						controls.push($ctrl);
 						// attach specific event to this input
 						$ctrl.on(controlEvents[i].event, function () {
@@ -78,8 +78,9 @@
 									showCol = true;
 								}
 							}
-							if ( !showCol )
+							if ( !showCol ) {
 								return false;
+							}
 						}
 
 						return true;
@@ -130,19 +131,22 @@
 				var $ctrl = controls[i];
 				// quit if no `data-filter-col` attribute
 				var coldata = $ctrl.data('filter-col');
-				if ( coldata === undefined )
+				if ( coldata === undefined ) {
 					continue;
+				}
 
 				var cols = coldata.toString().split(',');
 				var val = "";
 
 				var isCheckbox = controls[i].is( controlEvents.checkbox.selector );
 				if ( isCheckbox ) {
-					if ( controls[i].is(':checked') )
+					if ( controls[i].is(':checked') ) {
 						val = $ctrl.data('filter-val');
+					}
 				}
-				else
+				else {
 					val = $ctrl.val();
+				}
 
 				filters.push( {'columns': cols, 'value': val} );
 			}
@@ -150,7 +154,7 @@
 			var args = [{'filters': filters}];
 			methods.filter.apply( $table, args );
 		}
-	}
+	};
 
 	$.fn.filtable = function (method) {
 		if ( method === 'filter' ) {
