@@ -1,4 +1,4 @@
-
+/* Filtable 0.10 - jQuery table filtering plugin */
 (function ($) {
 
 	// zebra striping classes
@@ -70,7 +70,11 @@
 							var showCol = false;
 							for ( var j = 0, numCols = cols.length; j < numCols; j++ ) {
 								var $td = $tr.find('td').eq(cols[j]);
-								if ( $td.text().toLowerCase().indexOf(val) >= 0 ) {
+								// Use `data-filter-val` attribute if provided
+								var fval = $td.data('filter-val');
+								var cellFilterVal = (fval === undefined ? $td.text() : fval);
+
+								if ( cellFilterVal.toString().toLowerCase().indexOf(val) >= 0 ) {
 									showCol = true;
 								}
 							}
