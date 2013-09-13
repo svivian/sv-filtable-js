@@ -1,4 +1,4 @@
-/* Filtable 0.10 - jQuery table filtering plugin */
+/* Filtable 0.11 - jQuery table filtering plugin */
 (function ($) {
 
 	// zebra striping classes
@@ -24,6 +24,20 @@
 			var $table = $(this);
 
 			return this.each(function () {
+				// search page anchor for filters to apply
+				var hashStr = window.location.hash.replace('#!', '');
+				if (hashStr.length > 0)
+				{
+					var hashArr = hashStr.split('&');
+					for (var i in hashArr)
+					{
+						// find controls and set to supplied value
+						var filterData = hashArr[i].split('=');
+						$('[data-filter-hash="' + filterData[0] + '"]', options.controlPanel).val( filterData[1] );
+					}
+				}
+
+				// set up events on form controls
 				for ( var i in controlEvents ) {
 					// select an input type
 					$(controlEvents[i].selector, options.controlPanel).each(function () {
@@ -35,6 +49,9 @@
 						});
 					});
 				}
+
+				// apply filters on page load
+				methods.createAndRunFilters($table);
 			});
 
 		},
