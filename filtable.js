@@ -35,7 +35,10 @@
 						$ctrl.on(controlEvents[ctrlType].event, function () {
 							if (ctrlType === 'select') {
 								// update URL hash (doesn't trigger onhashchange)
-								methods.updateFilterHash($ctrl.data('filter-hash'), $ctrl.val());
+								var ctrlHash = $ctrl.data('filter-hash');
+								if (ctrlHash) {
+									methods.updateFilterHash(ctrlHash, $ctrl.val());
+								}
 							}
 							methods.createAndRunFilters($table);
 						});
