@@ -215,6 +215,10 @@
 				hashStr += f + '=' + hashData[f];
 			}
 
+			// remove hash if empty
+			if (hashStr === '#')
+				hashStr = window.location.pathname + window.location.search;
+
 			window.history.replaceState(undefined, undefined, hashStr);
 		}
 	};
