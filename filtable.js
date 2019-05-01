@@ -24,33 +24,32 @@
 			var $table = $(this);
 
 			return this.each(function () {
-				// search page anchor for filters to apply
-				var hashStr = window.location.hash.replace('#!', '');
-				if (hashStr.length > 0)
-				{
-					var hashArr = hashStr.split('&');
-					for (var i in hashArr)
-					{
-						// find controls and set to supplied value
-						var filterData = hashArr[i].split('=');
-						$('[data-filter-hash="' + filterData[0] + '"]', options.controlPanel).val( filterData[1] );
-					}
-				}
-
 				// set up events on form controls
-				for ( var i in controlEvents ) {
+				for ( var elemType in controlEvents ) {
 					// select an input type
-					$(controlEvents[i].selector, options.controlPanel).each(function () {
+					$(controlEvents[elemType].selector, options.controlPanel).each(function () {
+						var ctrlType = elemType;
 						var $ctrl = $(this);
 						controls.push($ctrl);
 						// attach specific event to this input
-						$ctrl.on(controlEvents[i].event, function () {
+						$ctrl.on(controlEvents[ctrlType].event, function () {
+							if (ctrlType === 'select') {
+								// update URL hash (doesn't trigger onhashchange)
+								methods.updateFilterHash($ctrl.data('filter-hash'), $ctrl.val());
+							}
 							methods.createAndRunFilters($table);
 						});
 					});
 				}
 
+				// filter on hashchange
+				$(window).on('hashchange', function() {
+					methods.applyHashFilters(options.controlPanel);
+					methods.createAndRunFilters($table);
+				});
+
 				// apply filters on page load
+				methods.applyHashFilters(options.controlPanel);
 				methods.createAndRunFilters($table);
 			});
 
@@ -129,8 +128,7 @@
 						$tr.removeClass('hidden');
 						$tr.addClass( zebra[stripe] );
 						stripe = 1 - stripe;
-					}
-					else {
+					} else {
 						$tr.addClass('hidden');
 					}
 				});
@@ -160,8 +158,7 @@
 					if ( controls[i].is(':checked') ) {
 						val = $ctrl.data('filter-val');
 					}
-				}
-				else {
+				} else {
 					val = $ctrl.val();
 				}
 
@@ -170,17 +167,61 @@
 
 			var args = [{'filters': filters}];
 			methods.filter.apply( $table, args );
+		},
+
+		// [private] parse the URL hash value
+		parseFilterHash: function() {
+			var hashStr = window.location.hash.replace('#', '');
+			if (hashStr.length === 0) {
+				return {};
+			}
+
+			var filters = {};
+			var hashArr = hashStr.split('&');
+			for (var i in hashArr) {
+				var filterData = hashArr[i].split('=');
+				if (filterData.length === 2) {
+					filters[filterData[0]] = filterData[1];
+				}
+			}
+
+			return filters;
+		},
+
+		// [private] get URL hash and apply to control panel fields
+		applyHashFilters: function(controlPanel) {
+			var hashData = methods.parseFilterHash();
+			for (var field in hashData) {
+				$('[data-filter-hash="' + field + '"]', controlPanel).val( hashData[field] );
+			}
+		},
+
+		// [private] update value for fieldName in the URL hash
+		updateFilterHash: function(fieldName, fieldVal) {
+			var hashData = methods.parseFilterHash();
+			hashData[fieldName] = fieldVal;
+
+			// recompose hash
+			var hashStr = '#';
+			for (var f in hashData) {
+				if (hashData[f].length === 0)
+					continue;
+				if (hashStr !== '#')
+					hashStr += '&';
+
+				hashStr += f + '=' + hashData[f];
+			}
+
+			window.history.replaceState(undefined, undefined, hashStr);
 		}
 	};
 
 	$.fn.filtable = function (method) {
 		if ( method === 'filter' ) {
 			return methods.filter.apply( this, Array.prototype.slice.call(arguments, 1) );
-		}
-		else if ( typeof method === 'object' || ! method ) {
+		} else if ( typeof method === 'object' || !method ) {
 			return methods.init.apply( this, arguments );
-		}
-		else {
+		} else {
 			$.error('Unknown method `' + method + '` on jQuery.filtable');
 		}
 	};
