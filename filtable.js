@@ -1,4 +1,4 @@
-/* Filtable 0.11 - jQuery table filtering plugin */
+/* Filtable 0.12 - jQuery table filtering plugin */
 (function ($) {
 
 	// zebra striping classes
@@ -194,8 +194,15 @@
 		// [private] get URL hash and apply to control panel fields
 		applyHashFilters: function(controlPanel) {
 			var hashData = methods.parseFilterHash();
+
 			for (var field in hashData) {
-				$('[data-filter-hash="' + field + '"]', controlPanel).val( hashData[field] );
+				var $input = $('[data-filter-hash="' + field + '"]', controlPanel);
+				if ($input.attr('type') === 'checkbox') {
+					var checkboxVal = hashData[field] === '1' ? true : false;
+					$input.prop('checked', checkboxVal);
+				} else {
+					$input.val(hashData[field]);
+				}
 			}
 		},
 
