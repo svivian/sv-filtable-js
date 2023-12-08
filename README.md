@@ -4,7 +4,7 @@ Filtable - a jQuery table filtering plugin
 
 Filtable is a simple jQuery plugin to filter a table. Give it a set of input fields and it will automatically filter when the user interacts with those inputs (e.g. types in a text field). Alternatively, use the explicit filter method to filter whenever you like!
 
-Current version: 0.10
+Current version: 1.0
 
 
 ## Auto-filter mode
@@ -78,7 +78,7 @@ Here is a more complex example. We have a "name" input that filters on the first
 
 ## Zebra-striping
 
-Filtable also adds `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. You can start with odd/even classes on your table in the HTML, or even use `nth-child` in the CSS (for bevity) with odd/even overrides.
+Filtable also adds `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. You can start with odd/even classes on your table in the HTML, or even use `nth-child` in the CSS (for brevity) with odd/even overrides.
 
 Here's some example CSS, for a table with class `data-table`. The `nth-child` rule will be used on the default table set up, while the `.even` and `.odd` rules will be used when the table is filtered.
 
