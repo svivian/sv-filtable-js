@@ -1,4 +1,4 @@
-/* Filtable 0.12 - jQuery table filtering plugin */
+/* Filtable 1.2 - jQuery table filtering plugin */
 (function ($) {
 
 	// zebra striping classes
@@ -120,7 +120,7 @@
 
 			$oldTbody.each(function () {
 				// Work with a copy of the tbody so we can make changes with speed
-				var $newTbody = $oldTbody.clone();
+				var $newTbody = $oldTbody.clone(true);
 
 				$newTbody.find('> tr').each(function () {
 					var $tr = $(this);

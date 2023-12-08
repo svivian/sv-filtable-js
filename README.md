@@ -4,7 +4,7 @@ Filtable - a jQuery table filtering plugin
 
 Filtable is a simple jQuery plugin to filter a table. Give it a set of input fields and it will automatically filter when the user interacts with those inputs (e.g. types in a text field). Alternatively, use the explicit filter method to filter whenever you like!
 
-Current version: 1.0
+Current version: 1.2
 
 
 ## Auto-filter mode
