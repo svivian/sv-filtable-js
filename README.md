@@ -1,10 +1,8 @@
 
-Filtable - a jQuery table filtering plugin
+SV-Filtable
 =================================================
 
-Filtable is a simple jQuery plugin to filter a table. Give it a set of input fields and it will automatically filter when the user interacts with those inputs (e.g. types in a text field). Alternatively, use the explicit filter method to filter whenever you like!
-
-Current version: 1.2
+**sv-filtable-js** is a vanilla JavaScript plugin for filtering a table. Give it a set of input fields and it will automagically filter when the user interacts with those inputs (e.g. types in a text field). Alternatively, use the explicit filter method to filter whenever you like!
 
 
 ## Auto-filter mode
@@ -13,7 +11,7 @@ The main mode of Filtable is automatic filtering of the table. Simply pass in th
 
 1. Start with a standard HTML data table:
 
-		<table id="mytable">
+		<table id="data">
 		<thead>
 			<tr>
 				<th>First name</th>
@@ -42,38 +40,41 @@ The main mode of Filtable is automatic filtering of the table. Simply pass in th
 
 	The `data-filter-col` attribute states which column will get filtered. The column is zero-indexed, i.e. the first column is `0` and the fourth is `3`. Multiple columns can be specified by delimiting with commas e.g. `0,1` to match either of the first two columns.
 
-3. Include jQuery and Filtable:
+3. Include the Filtable script:
 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="filtable.js"></script>
+		<script src="/path/to/sv-filtable.js"></script>
 
-4. Call Filtable on the table and pass the wrapper div as the `controlPanel` parameter:
+4. Call Filtable with HTMLElement objects (e.g. as returned from `document.querySelector``) for the table and form wrapper:
 
-		$('#mytable').filtable({ controlPanel: $('#table-filters') });
+	const table = document.querySelector('#data');
+	const controlPanel = document.querySelector('#table-filters');
+	new SV.Filtable(table, controlPanel);
 
 Done!
 
 
 ## Explicit filtering mode
 
-Filtable allows you to explicitly filter a table whenever you like. The automatic filtering should be fine in most cases (and it's easier), but this mode allows more control where necessary. Just call Filtable with the string `'filter'` as the first parameter, then specify an array of filters in the options parameter.
+Filtable allows you to explicitly filter a table whenever you like. The automatic filtering should be fine in most cases (and it's easier), but this mode allows more control where necessary. Just call the `applyFilters` method on the Filtable object, with an array of filters. A filter is an object containing `columns` and `value` properties. The `columns` property must be an array, with the column numbers being zero-indexed. For example, this represents a search of the first column for the string "test":
 
-A filter is an object containing `columns` and `value` properties. For example, this represents a search of the first column for the string "test":
+	[{ columns: [0], value: 'test' }]
 
-	{ column: 0, value: 'test' }
+While this combines two filters:
+
+	[
+		{ columns: [0], value: 'foo' },
+		{ columns: [1], value: 'bar' }
+	]
 
 Here's the equivalent of the above auto-filter:
 
-	$('#filter-country').on('keyup', function () {
-		var search = $(this).val();
-		var filter = {columns: 3, value: search};
-		$('#mytable').filtable('filter', {filters: [filter]});
+	const table = document.querySelector('#data');
+	const filtable = new SV.Filtable(table);
+	document.querySelector('#filter-country').addEventListener('keyup', function () {
+		let search = this.value;
+		let filter = {columns: [3], value: search};
+		filtable.applyFilters([filter]);
 	});
-
-Here is a more complex example. We have a "name" input that filters on the first or last name, plus our "country" filter. This filters the table to rows where the name contains "simp" *and* the country contains "united":
-
-	var myfilters = [{ columns: '0,1', value: 'simp' }, { column: 3, value: 'united' }];
-	$('#mytable').filtable('filter', {filters: myfilters});
 
 
 ## Zebra-striping
@@ -105,13 +106,17 @@ Here's some example CSS, for a table with class `data-table`. The `nth-child` ru
 
 ## Events
 
-Filtable supports custom events. Currently there are two: `beforetablefilter` and `aftertablefilter`, which are called respectively (can you guess?) *before* the table filtering begins and *after* filtering is finished. This allows you to, for example, display a message like "Processing..." while the filtering is occurring.
+Filtable supports custom events. Currently there are two: `sv.filtable.before` and `sv.filtable.after`, which are called respectively (can you guess?) *before* the table filtering begins and *after* filtering is finished. This allows you to, for example, display a message like "Processing..." while the filtering is occurring. The events are triggered on the table element itself.
 
-	var $table = $('#mytable');
-	$table.on('beforetablefilter', function (event) {
-		$('#msg').text('Filtering table...')
+	const table = document.querySelector('#data');
+	const controlPanel = document.querySelector('#table-filters');
+	const consoleMsg = document.querySelector('#console-msg');
+
+	table.addEventListener('sv.filtable.before', function() {
+		consoleMsg.textContent = 'Filtering table...';
 	});
-	$table.on('aftertablefilter', function (event) {
-		$('#msg').text('Done filtering!')
+	table.addEventListener('sv.filtable.after', function() {
+		consoleMsg.textContent = 'Done filtering!';
 	});
-	$table.filtable({ filters: myfilters });
+
+	new SV.Filtable(table, controlPanel);

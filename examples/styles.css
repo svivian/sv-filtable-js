@@ -41,7 +41,7 @@ select {
 	min-width: 150px;
 }
 label {
-	margin: 0 4px 0 8px;
+	margin-right: 4px;
 }
 
 
@@ -64,10 +64,13 @@ tr.even > td {
 }
 
 
-
+/* Large table example */
 .large-table {
 	width: 100%;
 }
 .large-table td {
 	font-size: 12px;
+}
+.console {
+	font-family: ui-monospace, monospace;
 }

@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>jQuery Filtable - basic example</title>
+<title>SV-Filtable - basic example</title>
 <link rel="stylesheet" href="styles.css">
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="../filtable.js?dev"></script>
+<script defer src="../sv-filtable.js?dev"></script>
 <script>
-$(function(){
-	// Basic Filtable usage - pass in a div with the filters and the plugin will handle it
-	$('#data').filtable({ controlPanel: $('.table-filters') });
+// Basic Filtable usage - pass in the table and an element containing the filters, and the plugin will handle it
+document.addEventListener('DOMContentLoaded', function() {
+	const table = document.querySelector('#data');
+	const controlPanel = document.querySelector('#table-filters');
+	new SV.Filtable(table, controlPanel);
 });
 </script>
 </head>
 
 <body>
 
-<h1>jQuery Filtable - basic example</h1>
+<h1>SV-Filtable - basic example</h1>
 
 <p>Simple table for testing.</p>
 
 
-<div class="table-filters">
+<div id="table-filters">
 	<label for="filter-country">Name:</label>
 	<input type="text" class="input-text" id="filter-name" data-filter-col="0,1">
 

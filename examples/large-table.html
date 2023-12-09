@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>jQuery Filtable - large table example</title>
+<title>SV-Filtable - large table example</title>
 <link rel="stylesheet" href="styles.css">
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="../filtable.js?dev"></script>
+<script src="../sv-filtable.js?dev"></script>
 <script>
-$(function(){
-	// Basic Filtable usage - pass in a div with the filters and the plugin will handle it
-	$('#data').filtable({ controlPanel: $('.table-filters') });
+// Basic Filtable usage - pass in the table and an element containing the filters, and the plugin will handle it
+document.addEventListener('DOMContentLoaded', function() {
+	const table = document.querySelector('#data');
+	const controlPanel = document.querySelector('#table-filters');
+	const consoleMsg = document.querySelector('#console-msg');
+
+	// Example event handlers
+	table.addEventListener('sv.filtable.before', function() {
+		consoleMsg.textContent = 'Filtering table...';
+	});
+	table.addEventListener('sv.filtable.after', function() {
+		consoleMsg.textContent = 'Done filtering!';
+	});
+
+	new SV.Filtable(table, controlPanel);
 });
 </script>
 </head>
 
 <body>
 
-<h1>jQuery Filtable - large table example</h1>
+<h1>SV-Filtable - large table example</h1>
 
 <p>This is a large table of over 500 rows for speed testing.</p>
 
-<div class="table-filters">
+<div id="table-filters">
 	<label for="filter-country">Country:</label>
 	<input type="text" class="input-text" id="filter-country" data-filter-col="3">
 </div>
+
+<p class="console">Console: <span id="console-msg"></span></p>
 
 <!-- data taken from generatedata.com -->
 <table id="data" class="large-table">
