@@ -87,8 +87,7 @@ SV.Filtable = (function() {
 				let isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
 				let fieldVal = '';
 				if (isCheckbox) {
-					let checkedVal = fieldElem.getAttribute('data-filter-value');
-					fieldVal = fieldElem.checked && checkedVal !== null ? checkedVal : '';
+					fieldVal = fieldElem.checked ? fieldElem.value : '';
 				} else {
 					fieldVal = fieldElem.value;
 				}
