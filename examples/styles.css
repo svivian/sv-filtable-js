@@ -10,7 +10,7 @@ table {
 }
 th, td {
 	padding: 5px 10px;
-	border: 1px solid #999;
+	border: 1px solid #bbb;
 }
 th {
 	background-color: #eee;
@@ -31,11 +31,11 @@ input, select {
 	font: inherit;
 	margin: 0;
 	padding: 4px;
+	border: 1px solid #bbb;
 }
 .input-text {
 	min-width: 150px;
 	background-color: #fff;
-	border: 1px solid #ccc;
 }
 select {
 	min-width: 150px;
@@ -54,13 +54,13 @@ tr:nth-child(odd) > td {
 	background-color: #ffffff;
 }
 tr:nth-child(even) > td {
-	background-color: #f9f9f7;
+	background-color: #f4f4f2;
 }
 tr.odd > td {
 	background-color: #ffffff;
 }
 tr.even > td {
-	background-color: #f9f9f7;
+	background-color: #f4f4f2;
 }
 
 

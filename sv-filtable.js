@@ -26,6 +26,8 @@ SV.Filtable = (function() {
 
 		let allControlFields = [];
 
+		const zebraStripes = ['odd', 'even'];
+
 		// public api
 		let methods = {};
 
@@ -264,11 +266,17 @@ SV.Filtable = (function() {
 			// trigger a redraw to avoid locking up the browser and ensure sv.filtable.before takes effect
 			setTimeout(function() {
 				let tableRows = tableElem.querySelectorAll(':scope > tbody > tr');
+				let stripe = 0;
 				for (let row of tableRows) {
-					if (filterRow(row, filters))
+					let showRow = filterRow(row, filters);
+					row.classList.remove(...zebraStripes);
+					if (showRow) {
 						row.classList.remove('hidden');
-					else
+						row.classList.add(zebraStripes[stripe]);
+						stripe = 1 - stripe;
+					} else {
 						row.classList.add('hidden');
+					}
 				}
 
 				// trigger after-filter event
