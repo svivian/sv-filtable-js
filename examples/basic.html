@@ -24,22 +24,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div id="table-filters">
 	<label for="filter-country">Name:</label>
-	<input type="text" class="input-text" id="filter-name" data-filter-col="0,1">
-
-	<label for="filter-city">City:</label>
-	<select id="filter-city" data-filter-col="2" style="min-width:60px">
-		<option value="">- All -</option>
-		<option value="j">J</option>
-		<option value="k">K</option>
-		<option value="ll">LL</option>
-	</select>
+	<input type="text" class="input-text" data-filter-col="0,1" id="filter-name">
 
 	<label for="filter-country">Country:</label>
-	<input type="text" class="input-text" id="filter-country" data-filter-col="3">
+	<select id="filter-country" data-filter-col="3">
+		<option value="">- All -</option>
+		<option>Bolivia</option>
+		<option>Germany</option>
+		<option>Italy</option>
+		<option>Kiribati</option>
+		<option>Mexico</option>
+		<option>Morocco</option>
+		<option>New Zealand</option>
+		<option>Slovakia</option>
+		<option>Sweden</option>
+		<option>United Kingdom</option>
+	</select>
 
 	<label for="filter-tick">
-		<input type="checkbox" id="filter-tick" data-filter-col="0,1,2,3" data-filter-val="B"> B</label>
-
+		<input type="checkbox" id="filter-tick" data-filter-col="4" value="Y"> Europe
+	</label>
 </div>
 
 
@@ -51,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		<th>Last name</th>
 		<th>City</th>
 		<th>Country</th>
+		<th>Europe?</th>
 	</tr>
 </thead>
 <tbody>
@@ -59,120 +64,140 @@ document.addEventListener('DOMContentLoaded', function() {
 		<td class="name">Wooten</td>
 		<td>Valdosta</td>
 		<td>United Kingdom</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Stewart</td>
 		<td class="name">Dillard</td>
 		<td>South Portland</td>
 		<td>Italy</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Tana</td>
 		<td class="name">Villarreal</td>
 		<td>Waltham</td>
-		<td>Solomon Islands</td>
+		<td>Sweden</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Wendy</td>
 		<td class="name">Greer</td>
 		<td>Bellflower</td>
-		<td>Mauritania</td>
+		<td>United Kingdom</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Kenneth</td>
 		<td class="name">Livingston</td>
 		<td>Anaheim</td>
-		<td>Honduras</td>
+		<td>Morocco</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Holly</td>
 		<td class="name">Strong</td>
 		<td>Placentia</td>
-		<td>Greenland</td>
+		<td>Kiribati</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Lynn</td>
 		<td class="name">Cooley</td>
 		<td>Temecula</td>
-		<td>Papua New Guinea</td>
+		<td>Morocco</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Autumn</td>
 		<td class="name">Barry</td>
 		<td>Malden</td>
-		<td>Serbia and Montenegro</td>
+		<td>Italy</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Hadassah</td>
 		<td class="name">Berry</td>
 		<td>Ketchikan</td>
-		<td>Egypt</td>
+		<td>Kiribati</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Hector</td>
 		<td class="name">Burns</td>
 		<td>Kokomo</td>
-		<td>Monaco</td>
+		<td>Sweden</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Eagan</td>
 		<td class="name">Carr</td>
 		<td>Jeannette</td>
 		<td>Slovakia</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Charissa</td>
 		<td class="name">Barker</td>
 		<td>Meadville</td>
 		<td>New Zealand</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Abigail</td>
 		<td class="name">Holman</td>
 		<td>Dubuque</td>
 		<td>Kiribati</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Caesar</td>
 		<td class="name">Carver</td>
 		<td>Jordan Valley</td>
 		<td>Mexico</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Barbara</td>
 		<td class="name">Shields</td>
 		<td>Saint Joseph</td>
 		<td>Germany</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Rose</td>
 		<td class="name">Pace</td>
 		<td>Moraga</td>
-		<td>Ecuador</td>
+		<td>Bolivia</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Nero</td>
 		<td class="name">William</td>
 		<td>Hutchinson</td>
-		<td>Serbia and Montenegro</td>
+		<td>Italy</td>
+		<td data-filter-value="Y">&check;</td>
 	</tr>
 	<tr>
 		<td>Thor</td>
 		<td class="name">Kelly</td>
 		<td>Jeffersonville</td>
-		<td>Liberia</td>
+		<td>Bolivia</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Edward</td>
 		<td class="name">Barron</td>
 		<td>Mandan</td>
-		<td>Paraguay</td>
+		<td>New Zealand</td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>Mohammad</td>
 		<td class="name">Mcfadden</td>
 		<td>Cicero</td>
 		<td>Bolivia</td>
+		<td></td>
 	</tr>
 </tbody>
 </table>
