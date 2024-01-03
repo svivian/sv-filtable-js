@@ -6,6 +6,8 @@ SV-Filtable
 
 Note: this library used to be a jQuery plugin - if you are looking for that, grab it from the [v1.2 tag](https://github.com/svivian/sv-filtable-js/releases/tag/v1.2).
 
+If you're looking for table sorting as well, check out [SV-Sortable](https://github.com/svivian/sv-sortable-js). Both libraries are independent but work nicely in tandem.
+
 
 ## Auto-filter mode
 
@@ -42,7 +44,6 @@ The main mode of Filtable is automatic filtering of the table. Simply pass in th
 		display: none;
 	}
 	```
-
 
 3. Add your filter, e.g. a basic text input. Here we put it in a wrapper div:
 
