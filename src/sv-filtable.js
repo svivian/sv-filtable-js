@@ -4,7 +4,7 @@ SV = window.SV || {};
 SV.Filtable = (function() {
 
 	// constructor
-	return function(tableElem, controlPanel) {
+	return function(tableElem, controlPanel, userConfig) {
 
 		// private members
 
@@ -26,6 +26,12 @@ SV.Filtable = (function() {
 
 		let allControlFields = [];
 
+		const defaultOptions = {
+			zebraStriping: false,
+		};
+		let config = {};
+
+		// classes for zebra striping
 		const zebraStripes = ['odd', 'even'];
 
 		// public api
@@ -201,6 +207,9 @@ SV.Filtable = (function() {
 			if (!tableElem)
 				throw 'Error: invalid table element supplied';
 
+			// merge config
+			config = Object.assign({}, defaultOptions, userConfig);
+
 			setUpInputEvents();
 
 			// filter on hashchange
@@ -290,7 +299,8 @@ SV.Filtable = (function() {
 					}
 				}
 
-				methods.restripeTable();
+				if (config.zebraStriping)
+					methods.restripeTable();
 
 				// trigger after-filter event
 				tableElem.dispatchEvent(new CustomEvent('sv.filtable.after'));

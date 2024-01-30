@@ -102,6 +102,31 @@ Table cells may also specify the `data-filter-value` attribute, which is used to
 </tr>
 ```
 
+### Zebra-striping
+
+The third argument to the constructor is an options object, which can be used to override the default options. There is currently one option, `zebraStriping`, which will add alternating `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems in CSS when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. Example usage:
+
+```js
+new SV.Filtable(table, controlPanel, {zebraStriping: true});
+```
+
+You can start with odd/even classes on your table in the HTML, or even use `nth-child` in the CSS (for brevity) with odd/even overrides. Here's some example CSS, for a table with class `data-table`. The `nth-child` rule will be used on the default table set up, while the `.odd` and `.even` rules will be used when the table is filtered.
+
+```css
+.data-table tr:nth-child(odd) > td {
+	background-color: #ffffff;
+}
+.data-table tr:nth-child(even) > td {
+	background-color: #f4f4f2;
+}
+.data-table tr.odd > td {
+	background-color: #ffffff;
+}
+.data-table tr.even > td {
+	background-color: #f4f4f2;
+}
+```
+
 
 ## Methods
 
@@ -142,7 +167,7 @@ The `buildFilters` method returns an array of filters based on the current state
 
 ### `.restripeTable()`
 
-Filtable automatically adds zebra striping to the table with `odd`/`even` classes (see below), however it only works during Filtable's own operations. The `restripeTable` method can be used if you changed the table rows externally in some way, for example using my other plugin, [SV-Sortable](https://github.com/svivian/sv-sortable-js). In this example we hook into the sorting events to reset the striping:
+Filtable can automatically add zebra striping to the table (see above), however it only works during Filtable's own operations. The `restripeTable` method can be used if you changed the table rows externally in some way, for example using my other plugin, [SV-Sortable](https://github.com/svivian/sv-sortable-js). In this example we hook into an event from that plugin to reset the striping when a table is sorted:
 
 ```js
 const sortable = new SV.Sortable(table);
@@ -151,28 +176,6 @@ const filtable = new SV.Filtable(table, controlPanel);
 table.addEventListener('sv.sortable.after', function() {
 	filtable.restripeTable();
 });
-```
-
-
-## Zebra-striping
-
-Filtable also adds `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems in CSS when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. You can start with odd/even classes on your table in the HTML, or even use `nth-child` in the CSS (for brevity) with odd/even overrides.
-
-Here's some example CSS, for a table with class `data-table`. The `nth-child` rule will be used on the default table set up, while the `.odd` and `.even` rules will be used when the table is filtered.
-
-```css
-.data-table tr:nth-child(odd) > td {
-	background-color: #ffffff;
-}
-.data-table tr:nth-child(even) > td {
-	background-color: #f4f4f2;
-}
-.data-table tr.odd > td {
-	background-color: #ffffff;
-}
-.data-table tr.even > td {
-	background-color: #f4f4f2;
-}
 ```
 
 
