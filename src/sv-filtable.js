@@ -68,39 +68,6 @@ SV.Filtable = (function() {
 		};
 
 		/**
-		 * Create a set of filter objects based on all fields' values and data-filter-* properties.
-		 */
-		const buildFilters = function() {
-			let filters = [];
-			const allCols = allColumnIds();
-
-			for (let fieldElem of allControlFields) {
-				let columnIds = [];
-				let columnVal = fieldElem.getAttribute('data-filter-col');
-
-				if (columnVal) {
-					columnIds = columnVal.toString().split(',');
-					validateColumnIds(allCols, columnIds);
-				} else {
-					// if data-filter-col is missing we search all table columns
-					columnIds = allCols;
-				}
-
-				let isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
-				let fieldVal = '';
-				if (isCheckbox) {
-					fieldVal = fieldElem.checked ? fieldElem.value : '';
-				} else {
-					fieldVal = fieldElem.value;
-				}
-
-				filters.push({columns: columnIds, value: fieldVal});
-			}
-
-			return filters;
-		};
-
-		/**
 		 * Add event listeners to all input fields.
 		 */
 		const setUpInputEvents = function() {
@@ -113,7 +80,7 @@ SV.Filtable = (function() {
 				for (let field of fieldElems) {
 					allControlFields.push(field);
 					field.addEventListener(ctrlType.event, function (ev) {
-						let filters = buildFilters();
+						let filters = methods.buildFilters();
 						methods.applyFilters(filters);
 						updateHashFilter(field);
 					});
@@ -239,18 +206,66 @@ SV.Filtable = (function() {
 			// filter on hashchange
 			window.addEventListener('hashchange', function(ev) {
 				applyHashFilters();
-				methods.applyFilters(buildFilters());
+				methods.applyFilters(methods.buildFilters());
 			});
 
 			// filter on page load
 			applyHashFilters();
 			// trigger redraw so browser can autocomplete fields
 			setTimeout(function() {
-				methods.applyFilters(buildFilters());
+				methods.applyFilters(methods.buildFilters());
 			}, 10);
 		};
 
 		// public methods
+
+		/**
+		 * Create a set of filter objects based on all fields' values and data-filter-* properties.
+		 */
+		methods.buildFilters = function() {
+			let filters = [];
+			const allCols = allColumnIds();
+
+			for (let fieldElem of allControlFields) {
+				let columnIds = [];
+				let columnVal = fieldElem.getAttribute('data-filter-col');
+
+				if (columnVal) {
+					columnIds = columnVal.toString().split(',');
+					validateColumnIds(allCols, columnIds);
+				} else {
+					// if data-filter-col is missing we search all table columns
+					columnIds = allCols;
+				}
+
+				let isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
+				let fieldVal = '';
+				if (isCheckbox) {
+					fieldVal = fieldElem.checked ? fieldElem.value : '';
+				} else {
+					fieldVal = fieldElem.value;
+				}
+
+				filters.push({columns: columnIds, value: fieldVal});
+			}
+
+			return filters;
+		};
+
+		/**
+		 * Reset the odd and even classes on visible rows.
+		 */
+		methods.restripeTable = function() {
+			let tableRows = tableElem.querySelectorAll(':scope > tbody > tr');
+			let stripe = 0;
+			for (let row of tableRows) {
+				row.classList.remove(...zebraStripes);
+				if (!row.classList.contains('hidden')) {
+					row.classList.add(zebraStripes[stripe]);
+					stripe = 1 - stripe;
+				}
+			}
+		};
 
 		/**
 		 * Apply the array of filters to the table.
@@ -266,18 +281,16 @@ SV.Filtable = (function() {
 			// trigger a redraw to avoid locking up the browser and ensure sv.filtable.before takes effect
 			setTimeout(function() {
 				let tableRows = tableElem.querySelectorAll(':scope > tbody > tr');
-				let stripe = 0;
 				for (let row of tableRows) {
 					let showRow = filterRow(row, filters);
-					row.classList.remove(...zebraStripes);
 					if (showRow) {
 						row.classList.remove('hidden');
-						row.classList.add(zebraStripes[stripe]);
-						stripe = 1 - stripe;
 					} else {
 						row.classList.add('hidden');
 					}
 				}
+
+				methods.restripeTable();
 
 				// trigger after-filter event
 				tableElem.dispatchEvent(new CustomEvent('sv.filtable.after'));

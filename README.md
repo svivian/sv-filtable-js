@@ -103,9 +103,13 @@ Table cells may also specify the `data-filter-value` attribute, which is used to
 ```
 
 
-## Programmatic filtering mode
+## Methods
 
-The Filtable object contains one public method, `applyFilters`, which allows you to explicitly filter a table whenever you like. The automatic filtering should be fine in most cases (and it's easier), but this mode allows more control where necessary. An array of filters must be passed into the function - a filter is an object containing `columns` and `value` properties. The `columns` property must be an array, with the column numbers being zero-indexed. For example, this represents a search of the first column for the string "test":
+The Filtable object contains some public methods, which can be used to manually apply filtering.
+
+### `.applyFilters(filters)`
+
+The `applyFilters` method allows you to explicitly filter a table whenever you like. The automatic filtering should be fine in most cases (and it's easier), but this mode allows more control where necessary. An array of filters must be passed into the function - a filter is an object containing `columns` and `value` properties. The `columns` property must be an array, with the column numbers being zero-indexed. For example, this represents a search of the first column for the string "test":
 
 ```js
 [{ columns: [0], value: 'test' }]
@@ -132,10 +136,27 @@ document.querySelector('#filter-country').addEventListener('keyup', function () 
 });
 ```
 
+### `.buildFilters()`
+
+The `buildFilters` method returns an array of filters based on the current state of the filter elements. This is useful if you want to apply custom filters as above, but base them on the current state.
+
+### `.restripeTable()`
+
+Filtable automatically adds zebra striping to the table with `odd`/`even` classes (see below), however it only works during Filtable's own operations. The `restripeTable` method can be used if you changed the table rows externally in some way, for example using my other plugin, [SV-Sortable](https://github.com/svivian/sv-sortable-js). In this example we hook into the sorting events to reset the striping:
+
+```js
+const sortable = new SV.Sortable(table);
+const filtable = new SV.Filtable(table, controlPanel);
+
+table.addEventListener('sv.sortable.after', function() {
+	filtable.restripeTable();
+});
+```
+
 
 ## Zebra-striping
 
-Filtable also adds `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. You can start with odd/even classes on your table in the HTML, or even use `nth-child` in the CSS (for brevity) with odd/even overrides.
+Filtable also adds `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems in CSS when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. You can start with odd/even classes on your table in the HTML, or even use `nth-child` in the CSS (for brevity) with odd/even overrides.
 
 Here's some example CSS, for a table with class `data-table`. The `nth-child` rule will be used on the default table set up, while the `.odd` and `.even` rules will be used when the table is filtered.
 
