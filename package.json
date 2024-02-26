@@ -1,6 +1,6 @@
 {
   "name": "sv-filtable",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "A simple JavaScript library to filter HTML tables",
   "main": "src/sv-filtable.js",
   "scripts": {},
