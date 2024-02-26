@@ -1,4 +1,3 @@
-
 SV-Filtable
 =================================================
 
@@ -80,7 +79,7 @@ Voila! Typing in the text box will now filter the table on the fourth column.
 
 ## Supported filters & options
 
-Filtable supports text inputs, select dropdowns, and checkboxes.
+Filtable supports text inputs, select dropdowns, and checkboxes. Text inputs can be either `<input type="text">` or `<input type="search">` (the latter helpfully adds an X to clear the input).
 
 For all inputs, the `data-filter-col` attribute can be used to specify which column(s) to filter. Columns are zero-indexed, i.e. the first column is `0` and the fourth is `3`. Multiple columns can be specified by delimiting with commas e.g. `0,1` to match either of the first two columns. If the attribute is omitted, all columns are searched.
 

@@ -11,8 +11,8 @@ SV.Filtable = (function() {
 		// control types with events
 		const controlTypes = {
 			text: {
-				selector: 'input[type="text"]',
-				event: 'keyup',
+				selector: 'input[type="text"], input[type="search"]',
+				event: 'input',
 			},
 			select: {
 				selector: 'select',
@@ -204,8 +204,9 @@ SV.Filtable = (function() {
 		 * Set up.
 		 */
 		const init = function() {
-			if (!tableElem)
+			if (!tableElem) {
 				throw 'Error: invalid table element supplied';
+			}
 
 			// merge config
 			config = Object.assign({}, defaultOptions, userConfig);

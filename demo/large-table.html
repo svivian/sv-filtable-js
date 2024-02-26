@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		consoleMsg.textContent = 'Done filtering!';
 	});
 
-	new SV.Filtable(table, controlPanel);
+	new SV.Filtable(table, controlPanel, {zebraStriping: true});
 });
 </script>
 </head>
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div id="table-filters">
 	<label for="filter-country">Country:</label>
-	<input type="text" class="input-text" id="filter-country" data-filter-col="3">
+	<input type="search" class="input-text" id="filter-country" data-filter-col="3">
 
 	<label for="filter-year">Year:</label>
 	<select id="filter-year" data-filter-col="5">
