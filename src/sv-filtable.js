@@ -28,6 +28,7 @@ SV.Filtable = (function() {
 
 		const defaultOptions = {
 			zebraStriping: false,
+			locale: 'en',
 		};
 		let config = {};
 
@@ -43,7 +44,7 @@ SV.Filtable = (function() {
 		 * Helper function for case-insensitive search.
 		 */
 		const strContains = function(haystack, needle) {
-			return haystack.toLocaleLowerCase('en-US').indexOf(needle.toLocaleLowerCase('en-US')) != -1;
+			return haystack.toLocaleLowerCase(config.locale).indexOf(needle.toLocaleLowerCase(config.locale)) != -1;
 		};
 
 		/**

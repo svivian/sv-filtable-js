@@ -101,9 +101,11 @@ Table cells may also specify the `data-filter-value` attribute, which is used to
 </tr>
 ```
 
-### Zebra-striping
+The third argument to the constructor is an options object, which can be used to override the default options. Possible options are:
 
-The third argument to the constructor is an options object, which can be used to override the default options. There is currently one option, `zebraStriping`, which will add alternating `odd` and `even` classes to the remaining visible table rows. This avoids zebra-striping problems in CSS when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. Example usage:
+### `zebraStriping`
+
+This option will add alternating `odd` and `even` classes to the remaining visible table rows (default: `false`). This avoids zebra-striping problems in CSS when using the `nth-child` selector - for example if rows 2 and 4 are filtered out, rows 1, 3 and 5 would normally end up with the same colour. Example usage:
 
 ```js
 new SV.Filtable(table, controlPanel, {zebraStriping: true});
@@ -124,6 +126,14 @@ You can start with odd/even classes on your table in the HTML, or even use `nth-
 .data-table tr.even > td {
 	background-color: #f4f4f2;
 }
+```
+
+### `locale`
+
+This option sets the locale used for converting strings to lowercase for comparison. The default is English (`en`) which works for the vast majority of cases, but some languages such as Turkish have slightly different rules for conversion. Example usage:
+
+```js
+new SV.Filtable(table, controlPanel, {locale: 'tr'});
 ```
 
 
