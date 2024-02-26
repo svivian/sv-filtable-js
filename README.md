@@ -1,11 +1,24 @@
 SV-Filtable
 =================================================
 
-**sv-filtable-js** is a vanilla JavaScript library for filtering a table. Give it a set of input fields and it will automagically filter the table when the user interacts with those inputs, such as typing in a text field. Filtering can also be performed manually if desired, and there are events that can be hooked into for custom behaviour.
+**sv-filtable-js** is a vanilla JavaScript library for filtering a table. Give it a set of input fields and it will automagically filter the table when the user interacts with those inputs, such as typing in a text field. Filtering can also be performed programatically if desired, and there are events that can be hooked into for custom behaviour.
 
 Note: this library used to be a jQuery plugin - if you are looking for that, grab it from the [v1.2 tag](https://github.com/svivian/sv-filtable-js/releases/tag/v1.2).
 
 If you're looking for table sorting as well, check out [SV-Sortable](https://github.com/svivian/sv-sortable-js). Both libraries are independent but work nicely in tandem.
+
+
+## Installation
+
+Filtable can be installed via npm:
+
+```sh
+npm install sv-filtable
+```
+
+Then use the file `node_modules/sv-filtable/src/sv-filtable.js` in your project - either directly in a `<script>` tag, or passing into your bundler/task runner.
+
+Alternatively, you can download or link to a minified version via [jsDelivr](https://www.jsdelivr.com/package/npm/sv-filtable).
 
 
 ## Auto-filter mode
