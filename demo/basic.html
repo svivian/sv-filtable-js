@@ -10,7 +10,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 	const table = document.querySelector('#data');
 	const controlPanel = document.querySelector('#table-filters');
-	new SV.Filtable(table, controlPanel);
+	new SV.Filtable(table, controlPanel, {zebraStriping: true});
 });
 </script>
 </head>

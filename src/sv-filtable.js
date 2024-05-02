@@ -52,14 +52,8 @@ SV.Filtable = (function() {
 		 */
 		const allColumnIds = function() {
 			const cells = tableElem.querySelectorAll(':scope > tbody > tr:first-child > td');
-			const len = cells.length;
 
-			let ids = [];
-			for (let i = 0; i < len; i++) {
-				ids.push(i);
-			}
-
-			return ids;
+			return Array.from(Array(cells.length).keys());
 		};
 
 		/**
@@ -67,7 +61,7 @@ SV.Filtable = (function() {
 		 */
 		const validateColumnIds = function(allIds, filterIds) {
 			for (let col of filterIds) {
-				col = parseInt(col, 10);
+				col = parseInt(col);
 				if (allIds.indexOf(col) == -1) {
 					throw 'Error: invalid column specified in data-filter-col attribute';
 				}
@@ -86,7 +80,7 @@ SV.Filtable = (function() {
 				let fieldElems = controlPanel.querySelectorAll(ctrlType.selector);
 				for (let field of fieldElems) {
 					allControlFields.push(field);
-					field.addEventListener(ctrlType.event, function (ev) {
+					field.addEventListener(ctrlType.event, function () {
 						let filters = methods.buildFilters();
 						methods.applyFilters(filters);
 						updateHashFilter(field);
@@ -215,7 +209,7 @@ SV.Filtable = (function() {
 			setUpInputEvents();
 
 			// filter on hashchange
-			window.addEventListener('hashchange', function(ev) {
+			window.addEventListener('hashchange', function() {
 				applyHashFilters();
 				methods.applyFilters(methods.buildFilters());
 			});
