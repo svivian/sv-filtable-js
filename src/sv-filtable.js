@@ -228,9 +228,12 @@ SV.Filtable = (function() {
 		 * Create a set of filter objects based on all fields' values and data-filter-* properties.
 		 */
 		methods.buildFilters = function() {
-			let filters = [];
 			const allCols = allColumnIds();
+			// skip if table is empty
+			if (allCols.length === 0)
+				return [];
 
+			let filters = [];
 			for (let fieldElem of allControlFields) {
 				let columnIds = [];
 				let columnVal = fieldElem.getAttribute('data-filter-col');
