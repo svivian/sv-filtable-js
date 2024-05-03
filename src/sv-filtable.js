@@ -41,6 +41,33 @@ SV.Filtable = (function() {
 		// private methods
 
 		/**
+		 * Set up.
+		 */
+		const init = function() {
+			if (!tableElem) {
+				throw 'Error: invalid table element supplied';
+			}
+
+			// merge config
+			config = Object.assign({}, defaultOptions, userConfig);
+
+			setUpInputEvents();
+
+			// filter on hashchange
+			window.addEventListener('hashchange', function() {
+				applyHashFilters();
+				methods.applyFilters(methods.buildFilters());
+			});
+
+			// filter on page load
+			applyHashFilters();
+			// trigger redraw so browser can autocomplete fields
+			setTimeout(function() {
+				methods.applyFilters(methods.buildFilters());
+			}, 10);
+		};
+
+		/**
 		 * Helper function for case-insensitive search.
 		 */
 		const strContains = function(haystack, needle) {
@@ -52,8 +79,9 @@ SV.Filtable = (function() {
 		 */
 		const getFieldValue = function(fieldElem) {
 			const isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
-			if (isCheckbox && !fieldElem.checked)
+			if (isCheckbox && !fieldElem.checked) {
 				return '';
+			}
 
 			return fieldElem.value;
 		};
@@ -83,8 +111,9 @@ SV.Filtable = (function() {
 		 * Add event listeners to all input fields.
 		 */
 		const setUpInputEvents = function() {
-			if (!controlPanel)
+			if (!controlPanel) {
 				return;
+			}
 
 			for (let i in controlTypes) {
 				let ctrlType = controlTypes[i];
@@ -108,8 +137,9 @@ SV.Filtable = (function() {
 
 			for (let filter of filters) {
 				// skip if empty search value
-				if (filter.value.length == 0)
+				if (filter.value.length == 0) {
 					continue;
+				}
 
 				let showThisRow = false;
 				// check for match in any columns
@@ -118,19 +148,22 @@ SV.Filtable = (function() {
 					let filterVal = cell.getAttribute('data-filter-value');
 					if (filterVal) {
 						// use exact match for filter-value
-						if (filter.value == filterVal)
+						if (filter.value == filterVal) {
 							showThisRow = true;
+						}
 					} else {
 						// partial match
 						let cellVal = cell.textContent;
-						if (strContains(cellVal, filter.value))
+						if (strContains(cellVal, filter.value)) {
 							showThisRow = true;
+						}
 					}
 				}
 
 				// if this filter doesn't match, ignore the rest
-				if (!showThisRow)
+				if (!showThisRow) {
 					return false;
+				}
 			}
 
 			// all filters matched
@@ -150,8 +183,9 @@ SV.Filtable = (function() {
 			let params = hashStr.split('&');
 			for (let param of params) {
 				let filterData = param.split('=');
-				if (filterData.length === 2)
+				if (filterData.length === 2) {
 					filters[filterData[0]] = filterData[1];
+				}
 			}
 
 			return filters;
@@ -161,14 +195,16 @@ SV.Filtable = (function() {
 		 * Get URL hash and apply to control panel fields, which in turn filters the table.
 		 */
 		const applyHashFilters = function() {
-			if (!controlPanel)
+			if (!controlPanel) {
 				return;
+			}
 
 			let hashData = parseHashFilter();
 			for (let name in hashData) {
 				fieldElem = controlPanel.querySelector('[data-filter-hash="' + name + '"]');
-				if (!fieldElem)
+				if (!fieldElem) {
 					continue;
+				}
 
 				const isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
 				if (isCheckbox && fieldElem.value === hashData[name]) {
@@ -184,8 +220,9 @@ SV.Filtable = (function() {
 		 */
 		const updateHashFilter = function(fieldElem) {
 			let fieldName = fieldElem.getAttribute('data-filter-hash');
-			if (!fieldName)
+			if (!fieldName) {
 				return;
+			}
 
 			// extend current data
 			let hashData = parseHashFilter();
@@ -194,47 +231,23 @@ SV.Filtable = (function() {
 			// recompose hash
 			let hashStr = '#';
 			for (let name in hashData) {
-				if (hashData[name].length === 0)
+				if (hashData[name].length === 0) {
 					continue;
-				if (hashStr !== '#')
+				}
+				if (hashStr !== '#') {
 					hashStr += '&';
+				}
 
 				hashStr += name + '=' + hashData[name];
 			}
 
 			// remove hash if empty
-			if (hashStr === '#')
+			if (hashStr === '#') {
 				hashStr = window.location.pathname + window.location.search;
+			}
 
 			// set hash
 			window.history.replaceState(undefined, undefined, hashStr);
-		};
-
-		/**
-		 * Set up.
-		 */
-		const init = function() {
-			if (!tableElem) {
-				throw 'Error: invalid table element supplied';
-			}
-
-			// merge config
-			config = Object.assign({}, defaultOptions, userConfig);
-
-			setUpInputEvents();
-
-			// filter on hashchange
-			window.addEventListener('hashchange', function() {
-				applyHashFilters();
-				methods.applyFilters(methods.buildFilters());
-			});
-
-			// filter on page load
-			applyHashFilters();
-			// trigger redraw so browser can autocomplete fields
-			setTimeout(function() {
-				methods.applyFilters(methods.buildFilters());
-			}, 10);
 		};
 
 		// public methods
@@ -245,8 +258,9 @@ SV.Filtable = (function() {
 		methods.buildFilters = function() {
 			const allCols = allColumnIds();
 			// skip if table is empty
-			if (allCols.length === 0)
+			if (allCols.length === 0) {
 				return [];
+			}
 
 			let filters = [];
 			for (let fieldElem of allControlFields) {
@@ -288,8 +302,9 @@ SV.Filtable = (function() {
 		 * We no longer clone the tbody as it doesn't work with IntersectionObserver.
 		 */
 		methods.applyFilters = function(filters) {
-			if (!Array.isArray(filters))
+			if (!Array.isArray(filters)) {
 				throw 'Error: invalid filters supplied';
+			}
 
 			// trigger before-filter event
 			tableElem.dispatchEvent(new CustomEvent('sv.filtable.before'));
@@ -306,8 +321,9 @@ SV.Filtable = (function() {
 					}
 				}
 
-				if (config.zebraStriping)
+				if (config.zebraStriping) {
 					methods.restripeTable();
+				}
 
 				// trigger after-filter event
 				tableElem.dispatchEvent(new CustomEvent('sv.filtable.after'));
