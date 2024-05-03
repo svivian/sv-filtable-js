@@ -48,6 +48,17 @@ SV.Filtable = (function() {
 		};
 
 		/**
+		 * Get a form control's value (different handling for checkboxes).
+		 */
+		const getFieldValue = function(fieldElem) {
+			const isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
+			if (isCheckbox && !fieldElem.checked)
+				return '';
+
+			return fieldElem.value;
+		};
+
+		/**
 		 * Simple range function.
 		 */
 		const allColumnIds = function() {
@@ -154,27 +165,31 @@ SV.Filtable = (function() {
 				return;
 
 			let hashData = parseHashFilter();
-
 			for (let name in hashData) {
 				fieldElem = controlPanel.querySelector('[data-filter-hash="' + name + '"]');
 				if (!fieldElem)
 					continue;
 
-				fieldElem.value = hashData[name];
+				const isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
+				if (isCheckbox && fieldElem.value === hashData[name]) {
+					fieldElem.checked = true;
+				} else {
+					fieldElem.value = hashData[name];
+				}
 			}
 		};
 
 		/**
 		 * Update URL hash based on input value (doesn't trigger onhashchange).
 		 */
-		const updateHashFilter = function(field) {
-			let fieldName = field.getAttribute('data-filter-hash');
+		const updateHashFilter = function(fieldElem) {
+			let fieldName = fieldElem.getAttribute('data-filter-hash');
 			if (!fieldName)
 				return;
 
 			// extend current data
 			let hashData = parseHashFilter();
-			hashData[fieldName] = field.value;
+			hashData[fieldName] = getFieldValue(fieldElem);
 
 			// recompose hash
 			let hashStr = '#';
@@ -246,14 +261,7 @@ SV.Filtable = (function() {
 					columnIds = allCols;
 				}
 
-				let isCheckbox = fieldElem.matches(controlTypes.checkbox.selector);
-				let fieldVal = '';
-				if (isCheckbox) {
-					fieldVal = fieldElem.checked ? fieldElem.value : '';
-				} else {
-					fieldVal = fieldElem.value;
-				}
-
+				let fieldVal = getFieldValue(fieldElem);
 				filters.push({columns: columnIds, value: fieldVal});
 			}
 

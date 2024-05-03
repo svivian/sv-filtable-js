@@ -1,7 +1,7 @@
 SV-Filtable
 =================================================
 
-**sv-filtable-js** is a vanilla JavaScript library for filtering a table. Give it a set of input fields and it will automagically filter the table when the user interacts with those inputs, such as typing in a text field. Filtering can also be performed programatically if desired, and there are events that can be hooked into for custom behaviour.
+**sv-filtable-js** is a vanilla JavaScript library for filtering a table. Give it a set of input fields and it will automagically filter the table when the user interacts with those inputs, such as typing in a text field. Filtering can also be performed programatically if desired, and there are events that can be hooked into for custom behaviour. It's lightweight and fast!
 
 Note: this library used to be a jQuery plugin - if you are looking for that, grab it from the [v1.2 tag](https://github.com/svivian/sv-filtable-js/releases/tag/v1.2).
 
@@ -74,7 +74,7 @@ The main mode of Filtable is automatic filtering of the table. Simply pass in th
 	<script defer src="/path/to/sv-filtable.js"></script>
 	```
 
-5. Call `SV.Filtable` with HTMLElement objects for the table and form wrapper (such as those returned from `document.querySelector`). As we are deferring script loading, we must run this after page load:
+5. Call `SV.Filtable` with HTMLElement objects for the table and form wrapper (such as those returned from `document.querySelector`), and any options (see below). As we are deferring script loading, we must run this after page load:
 
 	```html
 	<script>
@@ -82,7 +82,7 @@ The main mode of Filtable is automatic filtering of the table. Simply pass in th
 	document.addEventListener('DOMContentLoaded', function() {
 		const table = document.querySelector('#data');
 		const controlPanel = document.querySelector('#table-filters');
-		new SV.Filtable(table, controlPanel);
+		new SV.Filtable(table, controlPanel, {zebraStriping: true});
 	});
 	</script>
 	```
@@ -94,9 +94,13 @@ Voila! Typing in the text box will now filter the table on the fourth column.
 
 Filtable supports text inputs, select dropdowns, and checkboxes. Text inputs can be either `<input type="text">` or `<input type="search">` (the latter helpfully adds an X to clear the input).
 
+For text inputs, the search value is taken from whatever is typed in the box, and a fuzzy search is used (i.e. 'a' matches all rows containing the letter a somewhere). For the others, the value is taken from the `value` attribute of the selected option or checkbox, and an exact match is used.
+
+### `data-filter-col`
+
 For all inputs, the `data-filter-col` attribute can be used to specify which column(s) to filter. Columns are zero-indexed, i.e. the first column is `0` and the fourth is `3`. Multiple columns can be specified by delimiting with commas e.g. `0,1` to match either of the first two columns. If the attribute is omitted, all columns are searched.
 
-For text inputs, the search value is taken from whatever is typed in the box, and a fuzzy search is used (i.e. 'a' matches all rows containing the letter a somewhere). For the others, the value is taken from the `value` attribute of the selected option or checkbox, and an exact match is used.
+### `data-filter-type`
 
 Table cells may also specify the `data-filter-value` attribute, which is used to override the cell's text value when filtering. This is useful when cells contain non-textual content such as images. For example if our table contained a tick or cross depending on some attribute, we can set the attribute to Y or N accordingly, and use a checkbox with a value of Y:
 
@@ -113,6 +117,14 @@ Table cells may also specify the `data-filter-value` attribute, which is used to
 	<td data-filter-value="Y"><img src="tick.png"></td>
 </tr>
 ```
+
+### `data-filter-hash`
+
+Filtering can also use "hash URLs", which allows linking to a page with a pre-filled filter. A filter can be named using the `data-filter-hash` attribute on an input element, and whenever the table is filtered the URL will be changed to match. For example, if `data-filter-hash="year"` is specified on a `<select>` element and the year 2012 is selected, the URL will be updated to `#year=2012`.
+
+It's recommended to only use select fields and checkboxes with this feature, as they have specific and limited values.
+
+## Constructor options
 
 The third argument to the constructor is an options object, which can be used to override the default options. Possible options are:
 
@@ -193,7 +205,7 @@ Filtable can automatically add zebra striping to the table (see above), however 
 
 ```js
 const sortable = new SV.Sortable(table);
-const filtable = new SV.Filtable(table, controlPanel);
+const filtable = new SV.Filtable(table, controlPanel, {zebraStriping: true});
 
 table.addEventListener('sv.sortable.after', function() {
 	filtable.restripeTable();
