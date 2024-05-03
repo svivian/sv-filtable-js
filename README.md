@@ -217,6 +217,8 @@ table.addEventListener('sv.sortable.after', function() {
 
 Filtable supports two custom events: `sv.filtable.before` and `sv.filtable.after`, which are called respectively (can you guess?) *before* the table filtering begins and *after* filtering is finished. This allows you to, for example, display a message like "Processing..." while the filtering is occurring. The events are triggered on the table element itself.
 
+The event object passed to `sv.filtable.after` contains a `detail` property which includes the properties `visibleRows`, the number of rows that matched the filter, and `totalRows`, the total number of rows in the table.
+
 ```js
 const table = document.querySelector('#data');
 const controlPanel = document.querySelector('#table-filters');
@@ -225,8 +227,8 @@ const consoleMsg = document.querySelector('#console-msg');
 table.addEventListener('sv.filtable.before', function() {
 	consoleMsg.textContent = 'Filtering table...';
 });
-table.addEventListener('sv.filtable.after', function() {
-	consoleMsg.textContent = 'Done filtering!';
+table.addEventListener('sv.filtable.after', function(ev) {
+	consoleMsg.textContent = `Done filtering! Showing ${ev.detail.visibleRows} of ${ev.detail.totalRows} rows.`;
 });
 
 new SV.Filtable(table, controlPanel);

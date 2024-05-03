@@ -16,8 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	table.addEventListener('sv.filtable.before', function() {
 		consoleMsg.textContent = 'Filtering table...';
 	});
-	table.addEventListener('sv.filtable.after', function() {
-		consoleMsg.textContent = 'Done filtering!';
+	table.addEventListener('sv.filtable.after', function(ev) {
+		const msg = `Done filtering! Showing ${ev.detail.visibleRows} of ${ev.detail.totalRows} rows.`;
+		consoleMsg.textContent = msg;
 	});
 
 	new SV.Filtable(table, controlPanel, {zebraStriping: true});

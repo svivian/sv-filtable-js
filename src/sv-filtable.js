@@ -312,10 +312,13 @@ SV.Filtable = (function() {
 			// trigger a redraw to avoid locking up the browser and ensure sv.filtable.before takes effect
 			setTimeout(function() {
 				let tableRows = tableElem.querySelectorAll(':scope > tbody > tr');
+				let totalRows = tableRows.length;
+				let visibleRows = 0;
 				for (let row of tableRows) {
 					let showRow = filterRow(row, filters);
 					if (showRow) {
 						row.classList.remove('hidden');
+						visibleRows++;
 					} else {
 						row.classList.add('hidden');
 					}
@@ -326,7 +329,11 @@ SV.Filtable = (function() {
 				}
 
 				// trigger after-filter event
-				tableElem.dispatchEvent(new CustomEvent('sv.filtable.after'));
+				const evDetail = {
+					totalRows: totalRows,
+					visibleRows: visibleRows,
+				};
+				tableElem.dispatchEvent(new CustomEvent('sv.filtable.after', {detail: evDetail}));
 			}, 10);
 		};
 
